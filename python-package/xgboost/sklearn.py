@@ -86,10 +86,10 @@ class XGBModel(XGBModelBase):
     scale_pos_weight : float
         Balancing of positive and negative weights.
 
-    tree_method:
-        The tree construction algorithm used in XGBoost
-    grow_policy:
-        The grow policy used
+    tree_method : string
+        The tree construction algorithm (auto, approx, exact, hist)
+    grow_policy : string
+        Tree growing policy (depthwise, lossguide)
     base_score:
         The initial prediction score of all instances, global bias.
     seed : int
@@ -120,8 +120,8 @@ class XGBModel(XGBModelBase):
                  nthread=-1, gamma=0, min_child_weight=1, max_delta_step=0,
                  subsample=1, colsample_bytree=1, colsample_bylevel=1,
                  reg_alpha=0, reg_lambda=1, scale_pos_weight=1,
-                 tree_method='auto', grow_poliy=None,
-                 base_score=0.5, seed=0, missing=None):
+                 base_score=0.5, seed=0, missing=None,
+                 tree_method="auto", grow_policy="depthwise"):
         if not SKLEARN_INSTALLED:
             raise XGBoostError('sklearn needs to be installed in order to use this module')
         self.max_depth = max_depth
@@ -367,16 +367,16 @@ class XGBClassifier(XGBModel, XGBClassifierBase):
                  nthread=-1, gamma=0, min_child_weight=1,
                  max_delta_step=0, subsample=1, colsample_bytree=1, colsample_bylevel=1,
                  reg_alpha=0, reg_lambda=1, scale_pos_weight=1,
-
-                 base_score=0.5, seed=0, missing=None):
+                 base_score=0.5, seed=0, missing=None,
+                 tree_method="auto", grow_policy="depthwise"):
         super(XGBClassifier, self).__init__(max_depth, learning_rate,
                                             n_estimators, silent, objective,
                                             nthread, gamma, min_child_weight,
                                             max_delta_step, subsample,
                                             colsample_bytree, colsample_bylevel,
                                             reg_alpha, reg_lambda,
-                                            tree_method='auto', grow_poliy=None,
-                                            scale_pos_weight, base_score, seed, missing)
+                                            scale_pos_weight, base_score, seed, missing,
+                                            tree_method, grow_policy)
 
     def fit(self, X, y, sample_weight=None, eval_set=None, eval_metric=None,
             early_stopping_rounds=None, verbose=True):
